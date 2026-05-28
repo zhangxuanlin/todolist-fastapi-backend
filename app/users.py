@@ -1,3 +1,4 @@
+from pathlib import Path
 from sqlalchemy import create_engine, Column, Integer, String, DateTime
 from sqlalchemy.orm import declarative_base, sessionmaker
 from datetime import datetime
@@ -7,6 +8,9 @@ import os
 import uuid
 
 router = APIRouter()
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+UPLOAD_DIR = BASE_DIR / "app" / "uploads"
 
 # 角色字典
 ROLE_OPTIONS = {
@@ -65,7 +69,6 @@ def get_db():
 
 
 # 文件上传配置
-UPLOAD_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
@@ -74,12 +77,10 @@ async def save_avatar(file: UploadFile) -> str:
     if not file:
         return None
     
-    # 生成唯一文件名
     ext = os.path.splitext(file.filename)[1] if file.filename else ".jpg"
     filename = f"{uuid.uuid4().hex}{ext}"
-    filepath = os.path.join(UPLOAD_DIR, filename)
+    filepath = UPLOAD_DIR / filename
     
-    # 保存文件
     content = await file.read()
     with open(filepath, "wb") as f:
         f.write(content)

@@ -1,7 +1,8 @@
 import asyncio
 import json
 import os
-from fastapi import FastAPI, Query, Path, Body, Cookie, status
+from pathlib import Path
+from fastapi import FastAPI, Query, Path as FastAPIPath, Body, Cookie, status
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from datetime import datetime
@@ -14,6 +15,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.users import router as users_router
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker
+
+# 项目根目录
+BASE_DIR = Path(__file__).resolve().parent.parent
+UPLOADS_DIR = BASE_DIR / "app" / "uploads"
 
 # # 1. 拼装连接字符串 (格式: mysql+驱动://用户名:密码@地址:端口/数据库)
 # DATABASE_URL = "mysql+pymysql://root:Dgq%23!2024@114.55.251.224:12315/xl"
@@ -51,9 +56,8 @@ app.add_middleware(
 app.include_router(users_router)
 
 # 挂载上传文件目录
-uploads_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "uploads")
-os.makedirs(uploads_dir, exist_ok=True)
-app.mount("/uploads", StaticFiles(directory=uploads_dir), name="uploads")
+os.makedirs(UPLOADS_DIR, exist_ok=True)
+app.mount("/uploads", StaticFiles(directory=str(UPLOADS_DIR)), name="uploads")
 
 
 tags=["📦 商品管理模块", "车间管理"]
