@@ -11,7 +11,7 @@ from typing import Annotated, Literal
 from collections.abc import AsyncIterable, Iterable
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
-from .users import router as users_router
+from app.users import router as users_router
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker
 
