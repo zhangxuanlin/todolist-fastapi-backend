@@ -172,19 +172,6 @@ async def update_item(item_id: int, item: Item1):
 async def read_items(filter_query: Annotated[FilterParams, Query()]):
     return filter_query
 
-@app.put("/items4/{item_id}")
-async def update_item(
-    item_id: Annotated[int, Path(title="The ID of the item to get", ge=0, le=1000)],
-    q: str | None = None,
-    item: Item | None = None,
-):
-    results = {"item_id": item_id}
-    if q:
-        results.update({"q": q})
-    if item:
-        results.update({"item": item})
-    return {"message": "Item updated"}
-
 @app.put("/items5/{item_id}")
 async def update_item(item_id: int, item: Annotated[Item2, Body(embed=True)]):
     results = {"item_id": item_id, "item": item}
