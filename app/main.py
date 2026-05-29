@@ -34,7 +34,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     # ✅ 正确：只放行你真正的 Vercel 前端域名（注意：结尾千万不要加斜杠 /）
-    allow_origins=["https://totolist-fastapi-frontend.vercel.app"],       
+    allow_origins=["https://totolist-fastapi-frontend.vercel.app", "http://localhost:3000"],       
     # ✅ 正确：既然是具体域名，这里强烈建议设为 True！
     # 这样前端后续在 Headers 里传 Authorization 或 Cookie 时才不会被拦截
     allow_credentials=True,   
