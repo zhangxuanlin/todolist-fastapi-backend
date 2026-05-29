@@ -20,17 +20,6 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 BASE_DIR = Path(__file__).resolve().parent.parent
 UPLOADS_DIR = BASE_DIR / "app" / "uploads"
 
-# # 1. 拼装连接字符串 (格式: mysql+驱动://用户名:密码@地址:端口/数据库)
-# DATABASE_URL = "mysql+pymysql://root:Dgq%23!2024@114.55.251.224:12315/xl"
-
-# # 2. 创建引擎（如果是云数据库，建议加上 pool_recycle=3600 和 pool_pre_ping=True 防止断连）
-# engine = create_engine(DATABASE_URL, pool_size=5, max_overflow=10, pool_recycle=3600, pool_pre_ping=True)
-
-# # 3. 创建会话工厂和基类
-# SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-# Base = declarative_base()
-
-
 app = FastAPI(
     title="🤖 AI Agent 系统",
     description="""
@@ -112,24 +101,6 @@ class FilterParams(BaseModel):
     offset: int = Field(0, ge=0)
     order_by: Literal["created_at", "updated_at"] = "created_at"
     tags: list[str] = []
-
-# class Log(Base):
-#     __tablename__ = "logs"
-
-#     id = Column(Integer, primary_key=True, index=True)
-#     message = Column(String(255), index=True)
-#     created_at = Column(DateTime, default=datetime.now)
-
-# db = SessionLocal()
-
-
-# try:
-#     new_log = Log(message="这是来自fastapi+sqlalchemy创建的日志", created_at=datetime.now())
-#     db.add(new_log)
-#     db.commit()
-# except Exception as e:
-#     db.rollback()
-#     raise e
 
 @app.get("/", description="商品管理模块", tags=[tags[0]])
 def read_root():
